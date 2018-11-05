@@ -120,3 +120,64 @@ resource "aws_lb_listener_rule" "website" {
     values = ["webapp.is.${var.domain}"]
   }
 }
+
+
+resource "aws_iam_policy" "website" {
+  name        = "website"
+  description = "Allow website to access pricing and EC2 information"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+        {
+            "Sid": "",
+            "Action": [
+                "ec2:DescribeInstances",
+                "ec2:DescribeSpotPriceHistory",
+                "pricing:GetProducts",
+                "iam:GetRole"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
+EOF
+}
+
+
+resource "aws_iam_policy_attachment" "website" {
+  name       = "website"
+  roles      = ["${aws_iam_role.website.name}"]
+  policy_arn = "${aws_iam_policy.website.arn}"
+}
+
+resource "aws_iam_instance_profile" "website" {
+  name = "website"
+  role = "${aws_iam_role.website.name}"
+}
+
+resource "aws_iam_role" "website" {
+  name = "website"
+  description = "IAM role for Website"
+  path = "/"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
