@@ -100,7 +100,7 @@ resource "aws_security_group" "rails_app" {
   }
 
   tags {
-    Name = "website"
+    Name = "Rails App"
     Project = "website"
   }
 }
