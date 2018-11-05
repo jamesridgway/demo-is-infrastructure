@@ -87,3 +87,20 @@ resource "aws_lb_target_group" "website" {
     Project = "website"
   }
 }
+
+resource "aws_security_group" "rails_app" {
+  name        = "Rails App"
+  description = "Allow internal HTTP traffic"
+
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["172.16.0.0/12"]
+  }
+
+  tags {
+    Name = "website"
+    Project = "website"
+  }
+}
