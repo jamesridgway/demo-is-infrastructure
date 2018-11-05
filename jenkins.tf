@@ -211,6 +211,7 @@ resource "aws_iam_policy" "jenkins_ci_slave_packer_build" {
                 "ec2:DeleteVolume",
                 "ec2:DetachVolume",
                 "iam:CreateServiceLinkedRole",
+                "iam:GetRole",
                 "iam:PassRole",
                 "elasticloadbalancing:DescribeTargetHealth",
                 "elasticloadbalancing:DescribeTargetGroups"
