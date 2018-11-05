@@ -104,3 +104,19 @@ resource "aws_security_group" "rails_app" {
     Project = "website"
   }
 }
+
+
+resource "aws_lb_listener_rule" "website" {
+  listener_arn = "${aws_lb_listener.https.arn}"
+  priority     = 1
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.website.arn}"
+  }
+
+  condition {
+    field  = "host-header"
+    values = ["webapp.is.${var.domain}"]
+  }
+}

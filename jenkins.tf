@@ -51,7 +51,7 @@ resource "aws_lb_target_group" "jenkins" {
 
 resource "aws_lb_listener_rule" "jenkins" {
   listener_arn = "${aws_lb_listener.https.arn}"
-  priority     = 3
+  priority     = 2
 
   action {
     type             = "forward"
