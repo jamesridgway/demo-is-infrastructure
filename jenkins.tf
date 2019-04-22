@@ -305,6 +305,7 @@ resource "aws_iam_instance_profile" "jenkins_ci_master" {
 resource "aws_secretsmanager_secret" "jenkins_slave_private_key" {
   name        = "jenkins_slave_private_key"
   description = "Private key for 'jenkins' user on Jenkins Slaves"
+  recovery_window_in_days = 0
   tags {
     Project = "Jenkins"
   }
@@ -319,6 +320,7 @@ resource "aws_secretsmanager_secret_version" "jenkins_slave_private_key" {
 resource "aws_secretsmanager_secret" "jenkins_master" {
   name        = "jenkins_master"
   description = "Private key for 'jenkins' user on Jenkins Slaves"
+  recovery_window_in_days = 0
   tags {
     Project = "Jenkins"
   }
