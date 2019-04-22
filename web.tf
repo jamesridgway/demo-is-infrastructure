@@ -1,3 +1,4 @@
+# Creating a core Application Load Balancer
 resource "aws_lb" "core-alb" {
   name               = "core-alb"
   internal           = false
@@ -11,6 +12,7 @@ resource "aws_lb" "core-alb" {
   }
 }
 
+# Adding a DNS A record for the load balancer
 resource "aws_route53_record" "alb" {
   zone_id = "${data.aws_route53_zone.domain.zone_id}"
   name    = "*.is.${var.domain}"
@@ -22,7 +24,7 @@ resource "aws_route53_record" "alb" {
   }
 }
 
-
+# Security group to allow HTTP (80) traffic from everywhere
 resource "aws_security_group" "HTTP" {
   name        = "HTTP"
   description = "Allow HTTP traffic"
@@ -40,6 +42,7 @@ resource "aws_security_group" "HTTP" {
   }
 }
 
+# Security group to allow HTTPS (443) traffic from everywhere
 resource "aws_security_group" "HTTPS" {
   name        = "HTTPS"
   description = "Allow HTTPS traffic"
@@ -58,6 +61,7 @@ resource "aws_security_group" "HTTPS" {
 }
 
 
+# Creating an HTTPS (443) listener for the load balancer
 resource "aws_lb_listener" "https" {
   load_balancer_arn = "${aws_lb.core-alb.arn}"
   port              = "443"
@@ -72,6 +76,7 @@ resource "aws_lb_listener" "https" {
 }
 
 
+# Create a website target group
 resource "aws_lb_target_group" "website" {
   name     = "website"
   port     = 3000
